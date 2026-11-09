@@ -80,6 +80,16 @@ export function alertFor(days, index, t = THRESHOLDS) {
   return null;
 }
 
+/**
+ * Scores `date` from the weather published before it. `days` must end on the day before `date`,
+ * so a morning run scores today from the series through yesterday, the same way the backtest does.
+ */
+export function assessDate(days, date, t = THRESHOLDS) {
+  const series = [...days, { date }];
+  const index = series.length - 1;
+  return { score: scoreDay(series, index, t), alert: alertFor(series, index, t), weatherThrough: days.at(-1).date };
+}
+
 export function describe(score) {
   const n = x => (x == null ? "n/a" : (Math.round(x * 10) / 10).toString());
   return [

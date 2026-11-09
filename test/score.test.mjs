@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { scoreFeatures, alertFor } from "../src/score.mjs";
+import { scoreFeatures, alertFor, assessDate, scoreDay } from "../src/score.mjs";
 
 const base = { date: "2026-05-01", air14: 9, air7: 9.5, soil7: 9, rain7: 10, rain14: 20, daysSinceRain: 1, rainYesterday: 4 };
 
@@ -45,6 +45,16 @@ test("alert fires once when the level crosses into likely", () => {
   assert.equal(alertFor(days, last - 2), null);
   assert.equal(alertFor(days, last - 1)?.kind, "likely");
   assert.equal(alertFor(days, last), null);
+});
+
+test("assessing a date uses the whole series before it, matching the backtest", () => {
+  const days = syntheticDays({ length: 31, mean_temp: 9, temp_soil_10: 9, rainOnLastDays: 3 });
+  const yesterday = days.pop();
+  const assessed = assessDate(days, yesterday.date);
+  assert.equal(assessed.weatherThrough, days.at(-1).date);
+  assert.equal(assessed.score.rain7, 2 * 6);
+  assert.deepEqual(assessed.score, scoreDay([...days, { date: yesterday.date }], days.length));
+  assert.equal(assessed.alert?.kind, "likely");
 });
 
 test("no alert while soil stays cold", () => {

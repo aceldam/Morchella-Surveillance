@@ -1,5 +1,5 @@
 import { fetchDailyTable, addDays } from "../src/dmi.mjs";
-import { alertFor, scoreDay, describe, THRESHOLDS } from "../src/score.mjs";
+import { assessDate, describe, THRESHOLDS } from "../src/score.mjs";
 import { SITES, siteByKey } from "../src/sites.mjs";
 
 const dryRun = process.argv.includes("--dry-run");
@@ -29,19 +29,16 @@ async function checkSite(site) {
   const days = await fetchDailyTable({ municipalityId: site.municipalityId, from: addDays(today, -45), to: addDays(today, -1) });
   if (days.length < 15) throw new Error(`only ${days.length} days of weather returned from DMI`);
 
-  // The newest complete day DMI has published, normally yesterday.
-  const latestIndex = days.length - 1;
-  const score = scoreDay(days, latestIndex, thresholds);
-  console.log(`\n${site.name} (${site.species}), ${site.municipalityName} weather through ${days[latestIndex].date}\n${describe(score)}`);
+  const { score, alert, weatherThrough } = assessDate(days, today, thresholds);
+  console.log(`\n${site.name} (${site.species}), ${today} scored from ${site.municipalityName} weather through ${weatherThrough}\n${describe(score)}`);
 
-  const alert = alertFor(days, latestIndex, thresholds);
   if (!alert) {
     console.log("No alert today.");
     return;
   }
 
   const title = alert.kind === "likely" ? `${capitalize(site.species)} ${score.level}: ${site.name}` : `Morel season is opening: ${site.name}`;
-  const body = `${describe(score)}\nBased on ${site.municipalityName} weather through ${score.date}.`;
+  const body = `${describe(score)}\nBased on ${site.municipalityName} weather through ${weatherThrough}.`;
   console.log(`ALERT (${alert.kind}): ${title}`);
 
   if (dryRun) {
