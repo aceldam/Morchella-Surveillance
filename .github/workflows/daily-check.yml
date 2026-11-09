@@ -30,6 +30,7 @@ jobs:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           NTFY_SERVER: ${{ vars.NTFY_SERVER }}
           NTFY_TOKEN: ${{ secrets.NTFY_TOKEN }}
+          ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
         run: >
           node scripts/check.mjs
           ${{ inputs.dry_run == true && '--dry-run' || '' }}

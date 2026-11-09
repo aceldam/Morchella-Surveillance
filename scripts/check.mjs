@@ -63,6 +63,18 @@ async function notify({ title, body, priority, tags }) {
   const server = process.env.NTFY_SERVER || "https://ntfy.sh";
   const headers = { Title: headerSafe(title), Priority: priority, Tags: tags };
   if (process.env.NTFY_TOKEN) headers.Authorization = `Bearer ${process.env.NTFY_TOKEN}`;
+  const email = process.env.ALERT_EMAIL;
+
+  if (email) {
+    const withEmail = await fetch(`${server}/${topic}`, { method: "POST", headers: { ...headers, Email: email }, body });
+    if (withEmail.ok) {
+      console.log("Notification sent, with a copy by email.");
+      return;
+    }
+    // ntfy.sh forwards email only for verified accounts and caps it per day; the push must still go out.
+    console.warn(`ntfy refused the email copy (HTTP ${withEmail.status}: ${(await withEmail.text()).trim()}), sending push only.`);
+  }
+
   const response = await fetch(`${server}/${topic}`, { method: "POST", headers, body });
   if (!response.ok) throw new Error(`ntfy: HTTP ${response.status}`);
   console.log("Notification sent.");
