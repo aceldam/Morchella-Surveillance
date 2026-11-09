@@ -1,6 +1,6 @@
 # Morchella Surveillance
 
-Daily morel (Morchella) alerts for two sites, driven by DMI's open climate data. A GitHub Actions job runs every morning from March through mid June, scores the latest weather for each site and sends a push notification when conditions turn favourable.
+Daily morel (Morchella) alerts for two sites, driven by DMI's open climate data and the finding records in Danmarks Svampeatlas. A GitHub Actions job runs every morning from March through mid June, scores the latest weather for each site, sends a push notification when conditions turn favourable, and sends a separate notification listing validated morel findings reported anywhere in Denmark in the last three days.
 
 | Site | Species | Weather source (DMI municipality) | Findings |
 |---|---|---|---|
@@ -28,6 +28,10 @@ Levels: 0 points `possible`, 2 points `likely`, 3 points `very likely`.
 
 Notifications are sent per site when the level first reaches `likely` after being lower the day before, and once when the gate opens for the season. The rule is stateless, so it needs no database between runs. A site can override any threshold in `src/sites.mjs`; both sites currently share the defaults, since a sweep over the thresholds showed no combination that was clearly better for either.
 
+## Recent findings
+
+Independently of the weather score, the daily job queries Danmarks Svampeatlas for observations of the four morel taxa (M. esculenta, M. vulgaris, M. semilibera and M. conica sensu lato) across the whole country with an observation date in the last three days, and keeps only validated ones, using the same rule as the site: approved by a validator or by the system, or a community score of at least 80 without a rejection. When there are any, one notification lists them with date, species and locality, and tapping it opens the newest observation on svampe.databasen.org. The query is stateless, so a finding stays in the list for three mornings; validation can lag the observation by a day or more, so the window is sometimes empty on the morning after a find.
+
 Backtest over 2009-2026 (`npm run backtest`): about 3.5 alerts per site per season. For Boserup Skov 29 of 42 finding dates fall within a week after an alert; for Vestvolden 18 of 32. Hætte-morkel at Vestvolden also fruits after dry spells when the preceding month was wet, which the rain trigger does not catch, so treat a `possible` level there as worth a look if the 30-day total was high.
 
 ## Repository layout
@@ -35,9 +39,10 @@ Backtest over 2009-2026 (`npm run backtest`): about 3.5 alerts per site per seas
 - `Observations.csv`, `svampeatlasdata.csv` - finding records exported from Danmarks Svampeatlas.
 - `src/sites.mjs` - the sites, their municipalities and threshold overrides.
 - `src/dmi.mjs` - client for the DMI climate data API.
+- `src/svampeatlas.mjs` - client for the Danmarks Svampeatlas observations API.
 - `src/findings.mjs` - loader for both Svampeatlas export formats.
 - `src/score.mjs` - features, thresholds, scoring and the alert decision.
-- `scripts/check.mjs` - the daily job: fetches the last 45 days per site, scores the newest day and notifies via ntfy.
+- `scripts/check.mjs` - the daily job: fetches the last 45 days per site, scores the newest day, fetches the last three days of validated morel findings and notifies via ntfy.
 - `scripts/backtest.mjs` - replays the rule over every season and compares with the finding dates.
 - `scripts/fetch-dmi.mjs` - downloads the full daily series per site into `data/dmi/<site>.csv`.
 - `scripts/analyze.mjs` - the weather-versus-findings investigation; writes `output/<site>/`.
@@ -67,8 +72,10 @@ Alerts go to [ntfy](https://ntfy.sh). Install the ntfy app, subscribe to a topic
 | Secrets (optional) | `NTFY_TOKEN` | access token, only for a protected topic |
 | Variables (optional) | `NTFY_SERVER` | self-hosted server URL, default `https://ntfy.sh` |
 
-Both sites post to the same topic; the notification title names the site and species. To test end to end, run the workflow manually from the Actions tab with dry run off and a date such as `2024-04-24`.
+Both sites and the findings list post to the same topic; the notification title names the site and species, or the number of findings. To test end to end, run the workflow manually from the Actions tab with dry run off and a date such as `2024-04-24`.
 
 ## Data
 
 The DMI API at `https://opendataapi.dmi.dk/v2/climateData` needs no API key and allows 500 requests per 5 seconds. Daily municipality values are available for mean temperature and precipitation from 2009, min and max temperature and humidity from 2011, and soil temperature from 2014. Values for a day are published the following day. Finding records older than 2009 are kept in the exports but skipped by the analysis and backtest.
+
+The Svampeatlas API at `https://svampe.databasen.org/api/observations` needs no API key. The `where` parameter takes a JSON object with an `observationDate` range, and each entry in the `include` array is a JSON string describing a joined model. The taxon filter matches the determination's `Taxon_path` prefix for the Morchella genus (id 62678) followed by the species id, and the validation filter is the three-clause `$or` the site itself uses, kept in `VALIDATED_DETERMINATION`.
