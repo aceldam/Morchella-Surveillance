@@ -64,21 +64,10 @@ Alerts go to [ntfy](https://ntfy.sh). Install the ntfy app, subscribe to a topic
 | Where | Name | Value |
 |---|---|---|
 | Settings, Secrets and variables, Actions, Secrets | `NTFY_TOPIC` | your topic name |
-| Secrets (optional) | `NTFY_TOKEN` | ntfy access token, required for email copies and for a protected topic |
-| Secrets (optional) | `ALERT_EMAIL` | one address that receives a copy of every alert by email |
+| Secrets (optional) | `NTFY_TOKEN` | access token, only for a protected topic |
 | Variables (optional) | `NTFY_SERVER` | self-hosted server URL, default `https://ntfy.sh` |
 
 Both sites post to the same topic; the notification title names the site and species. To test end to end, run the workflow manually from the Actions tab with dry run off and a date such as `2024-04-24`.
-
-### Email copies
-
-ntfy forwards a message to one email address when asked, but ntfy.sh only does so for signed-in users with a verified address, and allows 5 emails per day on the free plan. To enable it:
-
-1. Create a free account at ntfy.sh, add your email under Account and verify it.
-2. Under Account, Access tokens, create a token and store it as the `NTFY_TOKEN` secret.
-3. Store the address as the `ALERT_EMAIL` secret.
-
-The email is best effort. If ntfy refuses it, for instance because the token is missing or the daily limit is reached, the job logs a warning and still sends the push notification.
 
 ## Data
 
