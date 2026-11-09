@@ -1,0 +1,16 @@
+{
+  "name": "morchella-surveillance",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Daily morel (Morchella) alert for Boserup Skov based on DMI weather data for Roskilde",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "fetch": "node scripts/fetch-dmi.mjs data/dmi 2009-01-01",
+    "analyze": "node scripts/analyze.mjs Observations.csv data/dmi/roskilde-daily.csv output",
+    "backtest": "node scripts/backtest.mjs",
+    "check": "node scripts/check.mjs",
+    "check:dry": "node scripts/check.mjs --dry-run",
+    "test": "node --test test/"
+  }
+}
