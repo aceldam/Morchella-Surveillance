@@ -7,8 +7,6 @@ const MORCHELLA_GENUS_PATH = "66576, 60212, 60043, 66091, 66117, 60425, 60424, 6
 /** Taxon ids in Danmarks Svampeatlas: M. esculenta, M. vulgaris, M. semilibera and M. conica sensu lato. */
 export const MOREL_TAXON_IDS = [17154, 45107, 17156, 68975];
 
-export const RECENT_DAYS = 3;
-
 /** The site's own definition of a validated determination: approved by a validator or by the system, or community-scored at least 80 and not rejected. */
 export const VALIDATED_DETERMINATION = {
   $or: [
@@ -18,9 +16,10 @@ export const VALIDATED_DETERMINATION = {
   ],
 };
 
-/** Validated morel findings anywhere in Denmark observed within the last RECENT_DAYS days up to and including `today`. */
-export function fetchRecentMorelFindings(today) {
-  return fetchMorelFindings({ from: addDays(today, -RECENT_DAYS), to: today });
+/** Validated morel findings anywhere in Denmark observed on the day before `today`; the job runs each morning. */
+export function fetchMorelFindingsObservedYesterday(today) {
+  const yesterday = addDays(today, -1);
+  return fetchMorelFindings({ from: yesterday, to: yesterday });
 }
 
 /** Validated morel findings anywhere in Denmark with an observation date from `from` to `to` inclusive, newest first. */

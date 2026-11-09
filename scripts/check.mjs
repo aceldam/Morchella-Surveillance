@@ -1,7 +1,7 @@
 import { fetchDailyTable, addDays } from "../src/dmi.mjs";
 import { assessDate, describe, THRESHOLDS } from "../src/score.mjs";
 import { SITES, siteByKey } from "../src/sites.mjs";
-import { fetchRecentMorelFindings, describeFindings, RECENT_DAYS } from "../src/svampeatlas.mjs";
+import { fetchMorelFindingsObservedYesterday, describeFindings } from "../src/svampeatlas.mjs";
 
 const dryRun = process.argv.includes("--dry-run");
 const forcedDate = process.argv.find(a => a.startsWith("--date="))?.slice(7);
@@ -18,7 +18,7 @@ let failures = 0;
 for (const site of siteArg === "all" ? SITES : [siteByKey(siteArg)]) {
   await attempt(site.name, () => checkSite(site));
 }
-await attempt("Svampeatlas", checkRecentFindings);
+await attempt("Svampeatlas", checkYesterdaysFindings);
 process.exit(failures ? 1 : 0);
 
 async function attempt(name, step) {
@@ -49,14 +49,14 @@ async function checkSite(site) {
   await send({ title, body, priority: alert.kind === "likely" ? "high" : "default", tags: alert.kind === "likely" ? "mushroom" : "seedling" });
 }
 
-async function checkRecentFindings() {
-  const findings = await fetchRecentMorelFindings(today);
-  console.log(`\nValidated morel findings in Denmark in the last ${RECENT_DAYS} days up to ${today}: ${findings.length}`);
+async function checkYesterdaysFindings() {
+  const findings = await fetchMorelFindingsObservedYesterday(today);
+  console.log(`\nValidated morel findings in Denmark observed on ${addDays(today, -1)}: ${findings.length}`);
   if (findings.length === 0) return;
   console.log(describeFindings(findings));
 
-  const title = `${findings.length} validated morel finding${findings.length === 1 ? "" : "s"} in Denmark`;
-  const body = `${describeFindings(findings)}\nFrom Danmarks Svampeatlas, last ${RECENT_DAYS} days.`;
+  const title = `${findings.length} validated morel finding${findings.length === 1 ? "" : "s"} in Denmark yesterday`;
+  const body = `${describeFindings(findings)}\nFrom Danmarks Svampeatlas.`;
   console.log(`ALERT (findings): ${title}`);
   await send({ title, body, priority: "default", tags: "eyes", click: findings[0].url });
 }

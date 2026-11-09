@@ -1,6 +1,6 @@
 # Morchella Surveillance
 
-Daily morel (Morchella) alerts for two sites, driven by DMI's open climate data and the finding records in Danmarks Svampeatlas. A GitHub Actions job runs every morning from March through mid June, scores the latest weather for each site, sends a push notification when conditions turn favourable, and sends a separate notification listing validated morel findings reported anywhere in Denmark in the last three days.
+Daily morel (Morchella) alerts for two sites, driven by DMI's open climate data and the finding records in Danmarks Svampeatlas. A GitHub Actions job runs every morning from March through mid June, scores the latest weather for each site, sends a push notification when conditions turn favourable, and sends a separate notification listing validated morel findings observed anywhere in Denmark the day before.
 
 | Site | Species | Weather source (DMI municipality) | Findings |
 |---|---|---|---|
@@ -30,7 +30,7 @@ Notifications are sent per site when the level first reaches `likely` after bein
 
 ## Recent findings
 
-Independently of the weather score, the daily job queries Danmarks Svampeatlas for observations of the four morel taxa (M. esculenta, M. vulgaris, M. semilibera and M. conica sensu lato) across the whole country with an observation date in the last three days, and keeps only validated ones, using the same rule as the site: approved by a validator or by the system, or a community score of at least 80 without a rejection. When there are any, one notification lists them with date, species and locality, and tapping it opens the newest observation on svampe.databasen.org. The query is stateless, so a finding stays in the list for three mornings; validation can lag the observation by a day or more, so the window is sometimes empty on the morning after a find.
+Independently of the weather score, the daily job queries Danmarks Svampeatlas for observations of the four morel taxa (M. esculenta, M. vulgaris, M. semilibera and M. conica sensu lato) across the whole country with an observation date of the previous day, and keeps only validated ones, using the same rule as the site: approved by a validator or by the system, or a community score of at least 80 without a rejection. When there are any, one notification lists them with date, species and locality, and tapping it opens the newest observation on svampe.databasen.org. The job runs at 07:00, so the previous day is the latest complete day. The query is keyed on observation date, so a finding reported or validated two or more days after it was observed is never listed.
 
 Backtest over 2009-2026 (`npm run backtest`): about 3.5 alerts per site per season. For Boserup Skov 29 of 42 finding dates fall within a week after an alert; for Vestvolden 18 of 32. Hætte-morkel at Vestvolden also fruits after dry spells when the preceding month was wet, which the rain trigger does not catch, so treat a `possible` level there as worth a look if the 30-day total was high.
 
@@ -42,7 +42,7 @@ Backtest over 2009-2026 (`npm run backtest`): about 3.5 alerts per site per seas
 - `src/svampeatlas.mjs` - client for the Danmarks Svampeatlas observations API.
 - `src/findings.mjs` - loader for both Svampeatlas export formats.
 - `src/score.mjs` - features, thresholds, scoring and the alert decision.
-- `scripts/check.mjs` - the daily job: fetches the last 45 days per site, scores the newest day, fetches the last three days of validated morel findings and notifies via ntfy.
+- `scripts/check.mjs` - the daily job: fetches the last 45 days per site, scores the newest day, fetches the validated morel findings observed the day before and notifies via ntfy.
 - `scripts/backtest.mjs` - replays the rule over every season and compares with the finding dates.
 - `scripts/fetch-dmi.mjs` - downloads the full daily series per site into `data/dmi/<site>.csv`.
 - `scripts/analyze.mjs` - the weather-versus-findings investigation; writes `output/<site>/`.
