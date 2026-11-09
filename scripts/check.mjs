@@ -48,6 +48,11 @@ async function checkSite(site) {
   await notify({ title, body, priority: alert.kind === "likely" ? "high" : "default", tags: alert.kind === "likely" ? "mushroom" : "seedling" });
 }
 
+// HTTP headers are ASCII only; ntfy decodes RFC 2047 encoded words, which keeps æ, ø and å intact.
+function headerSafe(text) {
+  return /^[\x20-\x7e]*$/.test(text) ? text : `=?UTF-8?B?${Buffer.from(text, "utf8").toString("base64")}?=`;
+}
+
 function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -56,7 +61,7 @@ async function notify({ title, body, priority, tags }) {
   const topic = process.env.NTFY_TOPIC;
   if (!topic) throw new Error("NTFY_TOPIC is not set");
   const server = process.env.NTFY_SERVER || "https://ntfy.sh";
-  const headers = { Title: title, Priority: priority, Tags: tags };
+  const headers = { Title: headerSafe(title), Priority: priority, Tags: tags };
   if (process.env.NTFY_TOKEN) headers.Authorization = `Bearer ${process.env.NTFY_TOKEN}`;
   const response = await fetch(`${server}/${topic}`, { method: "POST", headers, body });
   if (!response.ok) throw new Error(`ntfy: HTTP ${response.status}`);
