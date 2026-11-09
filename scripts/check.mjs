@@ -48,7 +48,9 @@ async function checkSite(site) {
   await notify({ title, body, priority: alert.kind === "likely" ? "high" : "default", tags: alert.kind === "likely" ? "mushroom" : "seedling" });
 }
 
-const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
 async function notify({ title, body, priority, tags }) {
   const topic = process.env.NTFY_TOPIC;
