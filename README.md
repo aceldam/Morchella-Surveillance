@@ -45,7 +45,7 @@ Backtest over 2009-2026 (`npm run backtest`): about 3.5 alerts per site per seas
 
 ## Running locally
 
-Requires Node 22 or newer. No dependencies to install.
+Requires Node 24 or newer. No dependencies to install.
 
 ```
 npm test                       # unit tests
