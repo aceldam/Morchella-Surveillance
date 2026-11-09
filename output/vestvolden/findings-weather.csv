@@ -1,0 +1,39 @@
+date,weekday,species,observer,temp_day,temp_prior7,temp_prior14,temp_prior30,tmin_prior7,soil10_prior7,precip_prior7,precip_prior14,precip_prior30,hum_prior7,days_since_rain_1mm
+2010-04-23,Fri,Morchella semilibera,Benny T. Olsen,6.1,6.5,7.2,6.8,,,8.4,8.4,42.2,,1
+2010-05-09,Sun,Morchella semilibera,Svend Aage Olsen,7.4,7.5,9.4,8.2,,,4.6,10.4,18.9,,1
+2010-05-21,Fri,Morchella semilibera,Bjørn W. Pedersen,16.4,11.9,9.6,9.2,,,16.9,42.4,55.6,,5
+2011-05-06,Fri,Morchella semilibera,Benny T. Olsen,11.6,8.3,11,10.3,0.3,,14.3,14.3,28.9,63,0
+2011-05-18,Wed,Morchella semilibera,Svend Aage Olsen,12.8,12.5,12.2,11.8,5.4,,14.3,16.4,28.6,76.6,0
+2012-05-03,Thu,Morchella semilibera,Bjørn W. Pedersen,13.8,11.6,10,7.5,6,,3.2,30.5,48.7,66.2,6
+2013-05-16,Thu,Morchella semilibera,Tom Smidth,17.1,12.6,12.2,10.7,6.1,,2.9,17.3,27.4,70.8,6
+2013-05-16,Thu,Morchella semilibera,Thomas Kehlet,17.1,12.6,12.2,10.7,6.1,,2.9,17.3,27.4,70.8,6
+2013-05-23,Thu,Morchella semilibera,Bjørn W. Pedersen,9.6,15.6,14.1,12,7.9,,38.5,41.4,62.3,79.9,0
+2014-04-26,Sat,Morchella semilibera,Thomas Kehlet,12.5,11.6,9.9,8.4,3.7,9.8,4.1,16.6,26.4,62.9,1
+2014-04-26,Sat,Morchella semilibera,David Boertmann,12.5,11.6,9.9,8.4,3.7,9.8,4.1,16.6,26.4,62.9,1
+2014-04-27,Sun,Morchella semilibera,Martin Vestergaard,13.3,11.8,10.2,8.7,5.1,10,4.1,15.1,26.4,60.4,2
+2014-04-28,Mon,Morchella semilibera,Thomas Kehlet,12.6,11.8,10.5,8.9,5.1,10.2,4.1,14.3,26.4,59.2,3
+2014-04-28,Mon,Morchella semilibera,Henrik Mathiassen,12.6,11.8,10.5,8.9,5.1,10.2,4.1,14.3,26.4,59.2,3
+2014-04-29,Tue,Morchella semilibera,Frank Desting,13.9,11.8,10.9,9.1,5.1,10.3,4.1,9.4,26.4,55.9,4
+2016-04-27,Wed,Morchella semilibera,Tobias Bøllingtoft,4.7,6.2,7,7.3,0,7.6,26,30,46.8,71.5,0
+2016-05-04,Wed,Morchella semilibera,Tobias Bøllingtoft,10,8.4,7.3,7.6,0.9,8.2,8.8,34.8,47.8,72.3,6
+2017-04-19,Wed,Morchella semilibera,Thomas Kehlet,3.4,5.4,7.1,7.5,-0.4,7.9,28,31.2,51.7,76.4,3
+2017-04-25,Tue,Morchella semilibera,Jørgen Mikkelsen,4.2,5.8,5.9,7.5,-2.1,7.2,7.1,37.8,45.8,67.3,0
+2017-05-03,Wed,Morchella semilibera,Svend Kronborg Kristensen,10.7,6.7,6.3,6.8,0.3,7.6,32.4,40.4,71.6,71.2,3
+2017-05-08,Mon,Morchella semilibera,Hanne Petra Katballe,8.1,10.2,7.9,7.2,4.1,9,2.5,40.3,73.7,55.7,0
+2017-05-11,Thu,Morchella semilibera,Erik Arnfred Thomsen,7.6,9,8.3,6.9,1.2,9.6,11.1,38.2,82.2,63.1,0
+2018-05-02,Wed,Morchella semilibera,Tobias Bøllingtoft,9.9,10,11.4,9.6,5.6,10,21.9,22.5,31.5,75.9,0
+2019-03-31,Sun,Morchella semilibera,Thomas Kehlet,5.7,7.5,7,5.7,1.7,6.5,2.1,5.1,99.4,77.2,5
+2019-04-07,Sun,Morchella semilibera,Bjørn W. Pedersen,10.2,8,7.7,6.4,-3,7.1,0,2.1,56,60.8,12
+2019-04-09,Tue,Morchella semilibera,Tom Smidth,4,9.2,8.2,6.7,2.9,7.5,0,0.4,50.9,61.5,14
+2019-04-17,Wed,Morchella semilibera,Christian Eldam,8.9,4.2,6.5,6.6,-0.7,6.4,0.3,0.3,3.2,60.3,22
+2019-05-03,Fri,Morchella semilibera,Svend Kronborg Kristensen,6.1,11.8,11.8,9.2,4.7,10.8,10.9,12.1,12.4,73.9,5
+2021-05-12,Wed,Morchella semilibera,Martin Schier Christiansen,13.4,10.3,9.1,8.1,3.3,9.6,28.4,49.4,50.5,76,0
+2021-05-13,Thu,Morchella semilibera,Morten Strandberg,12.7,11.2,9.5,8.4,3.3,10.1,13.2,49.5,50.6,75.3,1
+2021-05-13,Thu,Morchella semilibera,Mikkel Toft Hornum,12.7,11.2,9.5,8.4,3.3,10.1,13.2,49.5,50.6,75.3,1
+2021-05-13,Thu,Morchella semilibera,Anne Storgaard,12.7,11.2,9.5,8.4,3.3,10.1,13.2,49.5,50.6,75.3,1
+2021-05-16,Sun,Morchella semilibera,Per Schilling,11.2,13.3,10.3,9,7,11.7,12.2,44,52.9,78.5,2
+2022-05-04,Wed,Morchella semilibera,Hans Olav Nymand,10.4,9.6,9.7,8.1,1.8,9.5,0,0.4,33.4,68.7,26
+2023-05-03,Wed,Morchella semilibera,Per Schilling,8.8,8.1,9.2,8,-0.4,9,0,7.1,30.3,60.4,8
+2024-04-12,Fri,Morchella semilibera,Benny T. Olsen,11.4,11.5,8.7,7.3,6.1,10.3,13.7,46.2,60.2,79.1,0
+2024-04-21,Sun,Morchella semilibera,Mathias Hass,4.6,6.6,9.3,8,-0.1,9.4,9.4,15.8,64.3,70.3,1
+2024-04-21,Sun,Morchella semilibera,Mathias Hass,4.6,6.6,9.3,8,-0.1,9.4,9.4,15.8,64.3,70.3,1
